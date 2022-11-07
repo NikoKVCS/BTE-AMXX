@@ -1,5 +1,5 @@
-// °Ñsize¸ÄÐ¡+¸Äview_ofs ¿´ÆðÀ´¿ÉÒÔºÍ¶×ÏÂÐ§¹û²î²»¶à..²»¹ýÃ»ÕâÃ´×ö....
-// ËÆºõÃ»Ê²Ã´°ì·¨ÈÃBOT¶×ÏÂ ËùÒÔÕâ¸ö¾Í²»¼ÓBOTÊ¹ÓÃ¼¼ÄÜÁË.....
+// ï¿½ï¿½sizeï¿½ï¿½Ð¡+ï¿½ï¿½view_ofs ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÔºÍ¶ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½î²»ï¿½ï¿½..ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ã´ï¿½ï¿½....
+// ï¿½Æºï¿½Ã»Ê²Ã´ï¿½ì·¨ï¿½ï¿½BOTï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í²ï¿½ï¿½ï¿½BOTÊ¹ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½.....
 
 #include <amxmodx>
 #include <amxmisc> 
@@ -16,6 +16,8 @@
 #define PLUGIN "BTE Zb4 ZClass Humpback"
 #define VERSION "1.0"
 #define AUTHOR "BTE TEAM"
+
+#define _BOT_USE_SKILL
 
 #define NAME "z4humpback"
 #define PLAYER_MODEL "z4_humpback"
@@ -65,8 +67,38 @@ public plugin_init()
 	register_forward(FM_PlayerPostThink, "Forward_PlayerPostThink", 1);
 	
 	RegisterHam(Ham_Weapon_WeaponIdle, "weapon_knife", "HamF_Weapon_WeaponIdle");
+	
+#if defined _BOT_USE_SKILL
+	register_event("StatusValue", "StatusValueA", "be", "1=1");
+	register_event("StatusValue", "StatusValueB", "be", "1=2");
+#endif
 }
 
+#if defined _BOT_USE_SKILL
+public StatusValueA(id)
+{
+	if (!IS_THIS_ZOMBIE(id))
+		return;
+	
+	if (!is_user_bot(id) || !is_user_alive(id))
+		return;
+	
+	if (g_iSpeedUp[id])
+		DashEnd(id);
+}
+
+public StatusValueB(id)
+{
+	if (!IS_THIS_ZOMBIE(id))
+		return;
+	
+	if (!is_user_bot(id) || !is_user_alive(id))
+		return;
+	
+	if (!g_iSpeedUp[id])
+		DashStart(id);
+}
+#endif
 public plugin_precache()
 {
 	iClass = bte_zb4_regiter_zombie(NAME, PLAYER_MODEL, VIEW_MODEL, STUN_SOUND, MAX_SPEED, GRAVITY, HEAL_DAY, HEAL_NIGHT, XDAMAGE, KNOCKBACK, VM);
@@ -83,7 +115,7 @@ public plugin_precache()
 public bte_zb_infected(iVictim, iAttacker)
 {
 	g_iSpeedUp[iVictim] = 0;
-	// Ö±½ÓÐ´Èëcfg
+	// Ö±ï¿½ï¿½Ð´ï¿½ï¿½cfg
 	//client_cmd(iVictim, "cl_forwardspeed 1200");
 }
 
