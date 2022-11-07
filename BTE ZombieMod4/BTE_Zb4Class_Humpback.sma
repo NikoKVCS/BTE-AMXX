@@ -1,5 +1,5 @@
-// ��size��С+��view_ofs ���������ԺͶ���Ч�����..����û��ô��....
-// �ƺ�ûʲô�취��BOT���� ��������Ͳ���BOTʹ�ü�����.....
+// 把size改小+改view_ofs 看起来可以和蹲下效果差不多..不过没这么做....
+// 似乎没什么办法让BOT蹲下 所以这个就不加BOT使用技能了.....
 
 #include <amxmodx>
 #include <amxmisc> 
@@ -115,7 +115,7 @@ public plugin_precache()
 public bte_zb_infected(iVictim, iAttacker)
 {
 	g_iSpeedUp[iVictim] = 0;
-	// ֱ��д��cfg
+	// ֱ直接写入cfg
 	//client_cmd(iVictim, "cl_forwardspeed 1200");
 }
 
